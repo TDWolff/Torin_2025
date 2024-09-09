@@ -15,29 +15,30 @@ hide: true
 <div style="padding: 2rem;">
   <h2 style="font-size: 2rem; color: #333;">About Us</h2>
   <p style="font-size: 1.2rem; color: #666;">
-	We are passionate about computer science and are excited to share our journey with you. This page is dedicated to showcasing our projects, achievements, and experiences in the AP Computer Science A class.
+    We are passionate about computer science and are excited to share our journey with you. This page is dedicated to showcasing our projects, achievements, and experiences in the AP Computer Science A class.
   </p>
   <p>
   Our Members:
   Nandaan, and Torin.
   </P>
   <li>
-  <strong>Torin:</strong> I am from San Diego California, and I am a junior in highschool here at Del Norte. I have a heritage rooted in European countries, Latvia, Germany, Ireland, and Nordic. My lastname is from my German side and my Mom's side is fully from Latvia. I love to play Volleyball and I also love computers.
+  <strong>Torin:</strong> I am from San Diego California, and I am a junior in highschool here at Del Norte. I have a heritage rooted in European countries, Latvia, Germany, Ireland, and Nordic. My lastname is from my German side and my Mom's side is fully from Latvia. I love to play Volleyball and I also love computers. 🇱🇻
+  <img src="assets/js/pcimage.jpeg" alt="a pc" style="width: 200px; margin: 2rem auto;">
   </li>
 </div>
 
 <div style="padding: 2rem; background-color: #f9f9f9;">
   <h2 style="font-size: 2rem; color: #333;">Our Projects</h2>
   <ul style="font-size: 1.2rem; color: #666;">
-	<li><strong>Project 1:</strong> Description of project 1.</li>
-	<li><strong>Project 2:</strong> Description of project 2.</li>
-	<li><strong>Project 3:</strong> Description of project 3.</li>
+    <li><strong>Project 1:</strong> Description of project 1.</li>
+    <li><strong>Project 2:</strong> Description of project 2.</li>
+    <li><strong>Project 3:</strong> Description of project 3.</li>
   </ul>
 </div>
 
 <div style="padding: 2rem;">
   <h2 style="font-size: 2rem; color: #333;">Contact Us</h2>
   <p style="font-size: 1.2rem; color: #666;">
-	Feel free to reach out to us at <a href="mailto:your-email@example.com" style="color: #007acc;">your-email@example.com</a>.
+    Feel free to reach out to us at <a href="mailto:your-email@example.com" style="color: #007acc;">your-email@example.com</a>.
   </p>
 </div>

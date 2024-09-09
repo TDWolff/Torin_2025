@@ -2,8 +2,8 @@ title: NT Pages
 description: "Class of 2025"
 owner_name: Torin And Nandan
 github_username: TDWolff
-github_repo: "Student_2025" 
-baseurl: "/Student_2025"
+github_repo: "Torin_2025" 
+baseurl: "/Torin_2025"
 future: true
 minima:
   skin: dark

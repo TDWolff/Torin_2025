@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
 
 {% if site.remote_theme contains 'minima' %}
   {%- include theme/minima/base.html -%}
@@ -13,4 +12,75 @@
 {% elsif site.remote_theme contains 'cayman' %}
   {%- include theme/cayman/base.html -%}
 {% endif %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    #dvd-logo {
+      position: fixed;
+      width: 100px;
+      height: 50px;
+      background-color: #fff;
+      border: 2px solid #000;
+      color: #000;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="dvd-logo">DVD</div>
+  <script>
+    const dvdLogo = document.getElementById('dvd-logo');
+    let viewportWidth = window.innerWidth;
+    let viewportHeight = window.innerHeight;
+    let x = Math.random() * (viewportWidth - dvdLogo.clientWidth);
+    let y = Math.random() * (viewportHeight - dvdLogo.clientHeight);
+    let dx = 2;
+    let dy = 2;
+
+    function moveLogo() {
+      x += dx;
+      y += dy;
+
+      if (x <= 0 || x + dvdLogo.clientWidth >= viewportWidth) {
+        dx *= -1;
+      }
+      if (y <= 0 || y + dvdLogo.clientHeight >= viewportHeight) {
+        dy *= -1;
+      }
+
+      dvdLogo.style.left = x + 'px';
+      dvdLogo.style.top = y + 'px';
+
+      requestAnimationFrame(moveLogo);
+    }
+
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    dvdLogo.addEventListener('click', () => {
+      dvdLogo.style.backgroundColor = getRandomColor();
+    });
+
+    window.addEventListener('resize', () => {
+      viewportWidth = window.innerWidth;
+      viewportHeight = window.innerHeight;
+    });
+
+    moveLogo();
+  </script>
+</body>
 </html>
