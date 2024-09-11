@@ -19,7 +19,7 @@ hide: true
   </p>
   <p>
   Our Members:
-  Nandaan, and Torin.
+  Nandan, and Torin.
   </P>
   <li>
   <strong>Torin:</strong> I am from San Diego California, and I am a junior in highschool here at Del Norte. I have a heritage rooted in European countries, Latvia, Germany, Ireland, and Nordic. My lastname is from my German side and my Mom's side is fully from Latvia. I love to play Volleyball and I also love computers. 🇱🇻

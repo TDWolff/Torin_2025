@@ -49,7 +49,7 @@
       width: 200px; /* Set a fixed width */
     }
     #dropdown-menu.open {
-      max-height: 200px; /* Increased height to accommodate new option */
+      max-height: 250px; /* Increased height to accommodate new option */
       opacity: 1;
       display: block;
     }
@@ -78,15 +78,19 @@
     <input type="number" id="logo-count" min="0" max="1000" value="0">
     <label for="rgb-mode">Enable RGB Mode:</label>
     <input type="checkbox" id="rgb-mode">
+    <label for="rgb-speed">RGB Speed:</label>
+    <input type="range" id="rgb-speed" min="1" max="10" value="5">
   </div>
   <script>
     const dropdownMenu = document.getElementById('dropdown-menu');
     const optionsButton = document.getElementById('options-button');
     const logoCountInput = document.getElementById('logo-count');
     const rgbModeCheckbox = document.getElementById('rgb-mode');
+    const rgbSpeedSlider = document.getElementById('rgb-speed');
     let logos = [];
     let rgbMode = false;
     let hue = 0;
+    let rgbSpeed = 5;
 
     optionsButton.addEventListener('click', () => {
       if (dropdownMenu.classList.contains('open')) {
@@ -107,6 +111,10 @@
       if (rgbMode) {
         animateRGB();
       }
+    });
+
+    rgbSpeedSlider.addEventListener('input', () => {
+      rgbSpeed = parseInt(rgbSpeedSlider.value);
     });
 
     function createLogo() {
@@ -206,9 +214,15 @@
 
         if (x <= 0 || x + logo.clientWidth >= window.innerWidth) {
           dx *= -1;
+          if (!rgbMode) {
+            logo.style.backgroundColor = getRandomColor();
+          }
         }
         if (y <= 0 || y + logo.clientHeight >= window.innerHeight) {
           dy *= -1;
+          if (!rgbMode) {
+            logo.style.backgroundColor = getRandomColor();
+          }
         }
 
         logo.style.left = x + 'px';
@@ -242,7 +256,7 @@
 
     function animateRGB() {
       if (rgbMode) {
-        hue = (hue + 1) % 360; // Increment hue and wrap around at 360
+        hue = (hue + rgbSpeed) % 360; // Increment hue based on rgbSpeed and wrap around at 360
         updateLogoColors();
         requestAnimationFrame(animateRGB);
       }
