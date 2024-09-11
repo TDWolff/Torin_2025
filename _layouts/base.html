@@ -32,34 +32,135 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
       cursor: pointer;
     }
+    #dropdown-menu {
+      position: fixed;
+      top: 50px;
+      right: 10px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+      opacity: 0;
+      display: none;
+      z-index: 1;
+      width: 200px; /* Set a fixed width */
+    }
+    #dropdown-menu.open {
+      max-height: 200px; /* Increased height to accommodate new option */
+      opacity: 1;
+      display: block;
+    }
+    #dropdown-menu input {
+      width: 100%; /* Make input take full width */
+      box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    }
+    #options-button {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      z-index: 2;
+      width: 200px; /* Set the same fixed width */
+    }
   </style>
 </head>
 <body>
-  <div id="dvd-logo">DVD</div>
+  <button id="options-button">Options</button>
+  <div id="dropdown-menu">
+    <label for="logo-count">Number of Logos:</label>
+    <input type="number" id="logo-count" min="0" max="1000" value="0">
+    <label for="rgb-mode">Enable RGB Mode:</label>
+    <input type="checkbox" id="rgb-mode">
+  </div>
   <script>
-    const dvdLogo = document.getElementById('dvd-logo');
-    let viewportWidth = window.innerWidth;
-    let viewportHeight = window.innerHeight;
-    let x = Math.random() * (viewportWidth - dvdLogo.clientWidth);
-    let y = Math.random() * (viewportHeight - dvdLogo.clientHeight);
-    let dx = 2;
-    let dy = 2;
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    const optionsButton = document.getElementById('options-button');
+    const logoCountInput = document.getElementById('logo-count');
+    const rgbModeCheckbox = document.getElementById('rgb-mode');
+    let logos = [];
+    let rgbMode = false;
+    let hue = 0;
 
-    function moveLogo() {
-      x += dx;
-      y += dy;
-
-      if (x <= 0 || x + dvdLogo.clientWidth >= viewportWidth) {
-        dx *= -1;
+    optionsButton.addEventListener('click', () => {
+      if (dropdownMenu.classList.contains('open')) {
+        dropdownMenu.classList.remove('open');
+        setTimeout(() => {
+          dropdownMenu.style.display = 'none';
+        }, 300); // Match the transition duration
+      } else {
+        dropdownMenu.style.display = 'block';
+        setTimeout(() => {
+          dropdownMenu.classList.add('open');
+        }, 10); // Small delay to ensure display change is applied
       }
-      if (y <= 0 || y + dvdLogo.clientHeight >= viewportHeight) {
-        dy *= -1;
+    });
+
+    rgbModeCheckbox.addEventListener('change', () => {
+      rgbMode = rgbModeCheckbox.checked;
+      if (rgbMode) {
+        animateRGB();
+      }
+    });
+
+    function createLogo() {
+      const dvdLogo = document.createElement('div');
+      dvdLogo.className = 'dvd-logo';
+      dvdLogo.textContent = 'DVD';
+      dvdLogo.style.position = 'fixed';
+      dvdLogo.style.width = '100px';
+      dvdLogo.style.height = '50px';
+      dvdLogo.style.backgroundColor = '#fff';
+      dvdLogo.style.border = '2px solid #000';
+      dvdLogo.style.color = '#000';
+      dvdLogo.style.fontSize = '20px';
+      dvdLogo.style.fontWeight = 'bold';
+      dvdLogo.style.display = 'flex';
+      dvdLogo.style.alignItems = 'center';
+      dvdLogo.style.justifyContent = 'center';
+      dvdLogo.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
+      dvdLogo.style.cursor = 'pointer';
+
+      let attempts = 0;
+      const maxAttempts = 100;
+      do {
+        dvdLogo.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+        dvdLogo.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+        attempts++;
+      } while (isOverlapping(dvdLogo) && attempts < maxAttempts);
+
+      if (attempts === maxAttempts) {
+        console.warn('Could not find a non-overlapping position for the new logo.');
       }
 
-      dvdLogo.style.left = x + 'px';
-      dvdLogo.style.top = y + 'px';
+      dvdLogo.dx = 2 * (Math.random() > 0.5 ? 1 : -1);
+      dvdLogo.dy = 2 * (Math.random() > 0.5 ? 1 : -1);
 
-      requestAnimationFrame(moveLogo);
+      dvdLogo.addEventListener('click', () => {
+        dvdLogo.style.backgroundColor = getRandomColor();
+      });
+
+      document.body.appendChild(dvdLogo);
+      return dvdLogo;
+    }
+
+    function isOverlapping(newLogo) {
+      const newX = parseFloat(newLogo.style.left);
+      const newY = parseFloat(newLogo.style.top);
+      return logos.some(logo => {
+        const x = parseFloat(logo.style.left);
+        const y = parseFloat(logo.style.top);
+        return newX < x + logo.clientWidth &&
+               newX + newLogo.clientWidth > x &&
+               newY < y + logo.clientHeight &&
+               newY + newLogo.clientHeight > y;
+      });
     }
 
     function getRandomColor() {
@@ -71,16 +172,86 @@
       return color;
     }
 
-    dvdLogo.addEventListener('click', () => {
-      dvdLogo.style.backgroundColor = getRandomColor();
-    });
+    function updateLogoColors() {
+      logos.forEach(logo => {
+        if (rgbMode) {
+          logo.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
+        } else {
+          logo.style.backgroundColor = '#fff';
+        }
+      });
+    }
 
-    window.addEventListener('resize', () => {
-      viewportWidth = window.innerWidth;
-      viewportHeight = window.innerHeight;
-    });
+    function updateLogos() {
+      const count = Math.min(Math.max(parseInt(logoCountInput.value) || 0, 0), 1000);
+      while (logos.length > count) {
+        const logo = logos.pop();
+        document.body.removeChild(logo);
+      }
+      while (logos.length < count) {
+        logos.push(createLogo());
+      }
+      updateLogoColors();
+    }
 
-    moveLogo();
+    function moveLogos() {
+      logos.forEach((logo, index) => {
+        let x = parseFloat(logo.style.left);
+        let y = parseFloat(logo.style.top);
+        let dx = logo.dx;
+        let dy = logo.dy;
+
+        x += dx;
+        y += dy;
+
+        if (x <= 0 || x + logo.clientWidth >= window.innerWidth) {
+          dx *= -1;
+        }
+        if (y <= 0 || y + logo.clientHeight >= window.innerHeight) {
+          dy *= -1;
+        }
+
+        logo.style.left = x + 'px';
+        logo.style.top = y + 'px';
+        logo.dx = dx;
+        logo.dy = dy;
+
+        // Check for collisions with other logos
+        for (let j = index + 1; j < logos.length; j++) {
+          const otherLogo = logos[j];
+          const otherX = parseFloat(otherLogo.style.left);
+          const otherY = parseFloat(otherLogo.style.top);
+
+          if (x < otherX + otherLogo.clientWidth &&
+              x + logo.clientWidth > otherX &&
+              y < otherY + otherLogo.clientHeight &&
+              y + logo.clientHeight > otherY) {
+            // Simple collision response: swap velocities
+            const tempDx = logo.dx;
+            const tempDy = logo.dy;
+            logo.dx = otherLogo.dx;
+            logo.dy = otherLogo.dy;
+            otherLogo.dx = tempDx;
+            otherLogo.dy = tempDy;
+          }
+        }
+      });
+
+      requestAnimationFrame(moveLogos);
+    }
+
+    function animateRGB() {
+      if (rgbMode) {
+        hue = (hue + 1) % 360; // Increment hue and wrap around at 360
+        updateLogoColors();
+        requestAnimationFrame(animateRGB);
+      }
+    }
+
+    logoCountInput.addEventListener('input', updateLogos);
+    window.addEventListener('resize', updateLogos);
+
+    moveLogos();
   </script>
 </body>
 </html>
