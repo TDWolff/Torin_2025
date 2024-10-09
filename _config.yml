@@ -3,6 +3,7 @@ description: "Class of 2025"
 owner_name: Torin And Nandan
 github_username: TDWolff
 github_repo: "Torin_2025" 
+markdown: GFM
 baseurl: "/Torin_2025"
 future: true
 minima:
