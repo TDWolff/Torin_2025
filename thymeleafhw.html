@@ -1,5 +1,5 @@
 ---
-permalink: /thymeleaf.html
+permalink: /thyme-leaf.html
 layout: base
 search_exclude: true
 ---
@@ -16,10 +16,27 @@ search_exclude: true
             <th>Grade</th>
             <th>Status</th>
         </tr>
-        <tr th:each="student : ${students}">
+        <!-- Check if students list is empty -->
+        <tr th:if="${students != null and not #lists.isEmpty(students)}" th:each="student : ${students}">
             <td th:text="${student.name}"></td>
             <td th:text="${student.grade}"></td>
             <td th:text="${student.status ? 'Passed' : 'Failed'}"></td>
+        </tr>
+        <!-- Default fallback data if students list is empty or null -->
+        <tr th:if="${students == null or #lists.isEmpty(students)}">
+            <td>Jane Doe</td>
+            <td>75</td>
+            <td>Passed</td>
+        </tr>
+        <tr th:if="${students == null or #lists.isEmpty(students)}">
+            <td>John Smith</td>
+            <td>60</td>
+            <td>Passed</td>
+        </tr>
+        <tr th:if="${students == null or #lists.isEmpty(students)}">
+            <td>Emily Davis</td>
+            <td>45</td>
+            <td>Failed</td>
         </tr>
     </table>
 </body>
