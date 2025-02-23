@@ -1,0 +1,25 @@
+---
+permalink: /jquery.html
+layout: base
+search_exclude: true
+---
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery Update</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <input type="text" id="userInput" placeholder="Type something...">
+    <button id="updateButton">Update</button>
+    <p id="outputText">This text will change.</p>
+    <script>
+        $(document).ready(function() {
+            $("#updateButton").click(function() {
+                var userInput = $("#userInput").val();
+                $("#outputText").text(userInput);
+            });
+        });
+    </script>
+</body>
