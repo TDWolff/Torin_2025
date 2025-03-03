@@ -3,11 +3,12 @@ permalink: /game.html
 search_exclude: true
 ---
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sprite Switcher</title>
+    <title>AmLitProject</title>
     <style>
         body {
             margin: 0;
@@ -37,7 +38,6 @@ search_exclude: true
             height: 16px;
             background-size: contain;  /* Ensures the sprite fits nicely */
             position: absolute;
-            bottom: 20px;
             transition: transform 0.1s ease;
         }
     </style>
@@ -51,7 +51,6 @@ search_exclude: true
         const spriteBox = document.getElementById("sprite-box");
         const gameContainer = document.getElementById("game-container");
 
-        let positionX = 0;
         const speed = 10;
         const spriteMap = {
             "w": "standBack.png",
@@ -63,6 +62,15 @@ search_exclude: true
             "ArrowDown": "standForward.png",
             "ArrowRight": "standRL.png"
         };
+
+        // Center the sprite in the game container
+        const centerX = gameContainer.clientWidth / 2 - spriteBox.clientWidth / 2;
+        const centerY = gameContainer.clientHeight / 2 - spriteBox.clientHeight / 2;
+        spriteBox.style.left = `${centerX}px`;
+        spriteBox.style.top = `${centerY}px`;
+
+        let positionX = 0;
+        let positionY = 0;
 
         function updateSprite(sprite, flip = false) {
             spriteBox.style.backgroundImage = `url('sprites/${sprite}')`;
@@ -76,10 +84,16 @@ search_exclude: true
             } else if (direction === "right") {
                 positionX += speed;
                 updateSprite("standRL.png", false);
+            } else if (direction === "up") {
+                positionY -= speed;
+                updateSprite("standBack.png");
+            } else if (direction === "down") {
+                positionY += speed;
+                updateSprite("standForward.png");
             }
 
             // Move the "camera" (the game world) around the player
-            gameContainer.style.transform = `translateX(${-(positionX)}px)`;
+            gameContainer.style.transform = `translate(${-positionX}px, ${-positionY}px)`;
         }
 
         document.addEventListener("keydown", (event) => {
@@ -89,8 +103,10 @@ search_exclude: true
                     moveCamera("left");
                 } else if (event.key === "d" || event.key === "ArrowRight") {
                     moveCamera("right");
-                } else {
-                    updateSprite(spriteMap[event.key]);
+                } else if (event.key === "w" || event.key === "ArrowUp") {
+                    moveCamera("up");
+                } else if (event.key === "s" || event.key === "ArrowDown") {
+                    moveCamera("down");
                 }
             }
         });
