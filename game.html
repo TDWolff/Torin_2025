@@ -37,40 +37,44 @@ search_exclude: true
         let spriteX = canvas.width / 2 - 25;
         let spriteY = canvas.height / 2 - 25;
         const spriteSpeed = 5;
-
+    
         function drawSprite() {
             sprite.style.left = spriteX + 'px';
             sprite.style.top = spriteY + 'px';
         }
-
+    
         function update() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawSprite();
             requestAnimationFrame(update);
         }
-
+    
         window.addEventListener('keydown', function(event) {
             switch(event.key) {
                 case 'ArrowUp':
                     spriteY -= spriteSpeed;
                     sprite.style.backgroundImage = 'url("sprites/walkBack.png")';
+                    sprite.style.transform = 'scaleX(1)'; // Reset flip
                     break;
                 case 'ArrowDown':
                     spriteY += spriteSpeed;
                     sprite.style.backgroundImage = 'url("sprites/walkForward.png")';
+                    sprite.style.transform = 'scaleX(1)'; // Reset flip
                     break;
                 case 'ArrowLeft':
                     spriteX -= spriteSpeed;
                     sprite.style.backgroundImage = 'url("sprites/walkRL.png")';
+                    sprite.style.transform = 'scaleX(-1)'; // Flip horizontally
                     break;
                 case 'ArrowRight':
                     spriteX += spriteSpeed;
                     sprite.style.backgroundImage = 'url("sprites/walkRL.png")';
+                    sprite.style.transform = 'scaleX(1)'; // Default orientation
                     break;
             }
         });
-
+    
         update();
-    </script>
+    </script>    
 </body>
 </html>
