@@ -95,6 +95,10 @@ search_exclude: true
 
             // Move the "camera" (the game world) around the player
             gameContainer.style.transform = `translate(${-positionX + centerX}px, ${-positionY + centerY}px)`;
+
+            // Update the sprite position to move with the camera
+            spriteBox.style.left = `${positionX}px`;
+            spriteBox.style.top = `${positionY}px`;
         }
 
         document.addEventListener("keydown", (event) => {
