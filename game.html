@@ -20,6 +20,7 @@ search_exclude: true
             width: 50px;
             height: 50px;
             background-size: cover;
+            transform: scaleX(1);
         }
     </style>
 </head>
@@ -38,17 +39,19 @@ search_exclude: true
             "ArrowRight": "standRL.png"
         };
         
-        function updateSprite(sprite) {
+        function updateSprite(sprite, flip = false) {
             spriteBox.style.backgroundImage = `url('sprites/${sprite}')`;
+            spriteBox.style.transform = flip ? "scaleX(-1)" : "scaleX(1)";
         }
         
         document.addEventListener("keydown", (event) => {
             if (spriteMap[event.key]) {
-                updateSprite(spriteMap[event.key]);
+                let flip = event.key === "a" || event.key === "ArrowLeft";
+                updateSprite(spriteMap[event.key], flip);
             }
         });
         
-        updateSprite("spriteup.png");
+        updateSprite("standBack.png");
     </script>
 </body>
 </html>
