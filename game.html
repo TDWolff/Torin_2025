@@ -40,6 +40,17 @@ search_exclude: true
             position: absolute;
             transition: transform 0.1s ease;
             image-rendering: pixelated; /* Keeps edges crisp */
+            background-repeat: no-repeat;
+        }
+
+        @keyframes walkAnimation {
+            0% { background-position: 0 0; }
+            50% { background-position: -16px 0; }
+            100% { background-position: -32px 0; }
+        }
+
+        .walking {
+            animation: walkAnimation 0.5s steps(2) infinite;
         }
     </style>
 </head>
@@ -64,6 +75,17 @@ search_exclude: true
             "ArrowRight": "standRL.png"
         };
 
+        const walkSpriteMap = {
+            "w": "walkBack.png",
+            "a": "walkRL.png",
+            "s": "walkForward.png",
+            "d": "walkRL.png",
+            "ArrowUp": "walkBack.png",
+            "ArrowLeft": "walkRL.png",
+            "ArrowDown": "walkForward.png",
+            "ArrowRight": "walkRL.png"
+        };
+
         // Center the sprite in the game container
         const centerX = gameContainer.clientWidth / 2 - spriteBox.clientWidth / 2;
         const centerY = gameContainer.clientHeight / 2 - spriteBox.clientHeight / 2;
@@ -86,16 +108,16 @@ search_exclude: true
         function moveCamera(direction) {
             if (direction === "left") {
                 targetX -= speed;
-                updateSprite("standRL.png", true);
+                updateSprite("walkRL.png", true);
             } else if (direction === "right") {
                 targetX += speed;
-                updateSprite("standRL.png", false);
+                updateSprite("walkRL.png", false);
             } else if (direction === "up") {
                 targetY -= speed;
-                updateSprite("standBack.png");
+                updateSprite("walkBack.png");
             } else if (direction === "down") {
                 targetY += speed;
-                updateSprite("standForward.png");
+                updateSprite("walkForward.png");
             }
 
             // Boundary checks
@@ -120,6 +142,7 @@ search_exclude: true
         document.addEventListener("keydown", (event) => {
             if (spriteMap[event.key]) {
                 event.preventDefault();
+                spriteBox.classList.add("walking");
                 if (event.key === "a" || event.key === "ArrowLeft") {
                     moveCamera("left");
                 } else if (event.key === "d" || event.key === "ArrowRight") {
@@ -129,6 +152,13 @@ search_exclude: true
                 } else if (event.key === "s" || event.key === "ArrowDown") {
                     moveCamera("down");
                 }
+            }
+        });
+
+        document.addEventListener("keyup", (event) => {
+            if (spriteMap[event.key]) {
+                spriteBox.classList.remove("walking");
+                updateSprite(spriteMap[event.key]);
             }
         });
 
