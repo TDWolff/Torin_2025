@@ -38,7 +38,7 @@ search_exclude: true
             background-size: contain;  /* Ensures the sprite fits nicely */
             position: absolute;
             bottom: 20px;
-            transition: left 0.1s ease, transform 0.1s ease;
+            transition: transform 0.1s ease;
         }
     </style>
 </head>
@@ -69,7 +69,7 @@ search_exclude: true
             spriteBox.style.transform = flip ? "scaleX(-1)" : "scaleX(1)";
         }
 
-        function movePlayer(direction) {
+        function moveCamera(direction) {
             if (direction === "left") {
                 positionX -= speed;
                 updateSprite("standRL.png", true);
@@ -77,18 +77,18 @@ search_exclude: true
                 positionX += speed;
                 updateSprite("standRL.png", false);
             }
-            // Keep player centered
-            spriteBox.style.left = "calc(50% - 8px)"; // Center the sprite on the screen
-            gameContainer.style.transform = `translateX(${-(positionX)}px)`; // Move the background
+
+            // Move the "camera" (the game world) around the player
+            gameContainer.style.transform = `translateX(${-(positionX)}px)`;
         }
 
         document.addEventListener("keydown", (event) => {
             if (spriteMap[event.key]) {
                 event.preventDefault();
                 if (event.key === "a" || event.key === "ArrowLeft") {
-                    movePlayer("left");
+                    moveCamera("left");
                 } else if (event.key === "d" || event.key === "ArrowRight") {
-                    movePlayer("right");
+                    moveCamera("right");
                 } else {
                     updateSprite(spriteMap[event.key]);
                 }
