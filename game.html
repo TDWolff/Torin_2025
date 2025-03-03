@@ -34,11 +34,12 @@ search_exclude: true
         }
 
         #sprite-box {
-            width: 16px;
-            height: 16px;
-            background-size: contain;  /* Ensures the sprite fits nicely */
+            width: 64px; /* Upscaled size */
+            height: 64px; /* Upscaled size */
+            background-size: cover;  /* Ensures the sprite fits nicely */
             position: absolute;
             transition: transform 0.1s ease;
+            image-rendering: pixelated; /* Keeps edges crisp */
         }
     </style>
 </head>
