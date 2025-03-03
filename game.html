@@ -63,7 +63,7 @@ search_exclude: true
         const spriteBox = document.getElementById("sprite-box");
         const gameContainer = document.getElementById("game-container");
 
-        const speed = 2; // Reduced speed for smoother motion
+        const speed = 5; // Increased speed for faster motion
         const spriteMap = {
             "w": "standBack.png",
             "a": "standRL.png",
@@ -123,20 +123,15 @@ search_exclude: true
             // Boundary checks
             targetX = Math.max(centerX - mapWidth / 2, Math.min(targetX, centerX + mapWidth / 2 - spriteBox.clientWidth));
             targetY = Math.max(centerY - mapHeight / 2, Math.min(targetY, centerY + mapHeight / 2 - spriteBox.clientHeight));
-        }
 
-        function animate() {
-            positionX += (targetX - positionX) * 0.1;
-            positionY += (targetY - positionY) * 0.1;
+            // Update the sprite position to move with the camera
+            positionX = targetX;
+            positionY = targetY;
 
             // Move the "camera" (the game world) around the player
             gameContainer.style.transform = `translate(${-positionX + centerX}px, ${-positionY + centerY}px)`;
-
-            // Update the sprite position to move with the camera
             spriteBox.style.left = `${positionX}px`;
             spriteBox.style.top = `${positionY}px`;
-
-            requestAnimationFrame(animate);
         }
 
         document.addEventListener("keydown", (event) => {
@@ -163,7 +158,6 @@ search_exclude: true
         });
 
         updateSprite("standForward.png");
-        animate(); // Start the animation loop
     </script>    
 </body>
 </html>
