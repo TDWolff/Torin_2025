@@ -69,8 +69,8 @@ search_exclude: true
         spriteBox.style.left = `${centerX}px`;
         spriteBox.style.top = `${centerY}px`;
 
-        let positionX = 0;
-        let positionY = 0;
+        let positionX = centerX;
+        let positionY = centerY;
 
         function updateSprite(sprite, flip = false) {
             spriteBox.style.backgroundImage = `url('sprites/${sprite}')`;
@@ -93,7 +93,7 @@ search_exclude: true
             }
 
             // Move the "camera" (the game world) around the player
-            gameContainer.style.transform = `translate(${-positionX}px, ${-positionY}px)`;
+            gameContainer.style.transform = `translate(${-positionX + centerX}px, ${-positionY + centerY}px)`;
         }
 
         document.addEventListener("keydown", (event) => {
