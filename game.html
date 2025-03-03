@@ -38,20 +38,21 @@ search_exclude: true
             "ArrowDown": "standForward.png",
             "ArrowRight": "standRL.png"
         };
-        
+    
         function updateSprite(sprite, flip = false) {
             spriteBox.style.backgroundImage = `url('sprites/${sprite}')`;
             spriteBox.style.transform = flip ? "scaleX(-1)" : "scaleX(1)";
         }
-        
+    
         document.addEventListener("keydown", (event) => {
             if (spriteMap[event.key]) {
+                event.preventDefault(); // Prevent arrow keys from scrolling
                 let flip = event.key === "a" || event.key === "ArrowLeft";
                 updateSprite(spriteMap[event.key], flip);
             }
         });
-        
+    
         updateSprite("standForward.png");
-    </script>
+    </script>    
 </body>
 </html>
