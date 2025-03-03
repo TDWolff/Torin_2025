@@ -33,12 +33,12 @@ search_exclude: true
         }
 
         #sprite-box {
-            width: 50px;
-            height: 50px;
-            background-size: cover;
-            transform: scaleX(1);
+            width: 16px;
+            height: 16px;
+            background-size: contain;  /* Ensures the sprite fits nicely */
             position: absolute;
             bottom: 20px;
+            transition: left 0.1s ease, transform 0.1s ease;
         }
     </style>
 </head>
@@ -77,8 +77,9 @@ search_exclude: true
                 positionX += speed;
                 updateSprite("standRL.png", false);
             }
-            spriteBox.style.left = positionX + "px";
-            gameContainer.style.transform = `translateX(${-positionX}px)`;
+            // Keep player centered
+            spriteBox.style.left = "calc(50% - 8px)"; // Center the sprite on the screen
+            gameContainer.style.transform = `translateX(${-(positionX)}px)`; // Move the background
         }
 
         document.addEventListener("keydown", (event) => {
