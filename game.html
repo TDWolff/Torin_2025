@@ -195,7 +195,29 @@ search_exclude: true
             gameContainer.style.transform = `translate(${-positionX + centerX}px, ${-positionY + centerY}px)`;
             spriteBox.style.left = `${positionX}px`;
             spriteBox.style.top = `${positionY}px`;
-        }        
+        }     
+
+        // Draw lines from the player to each pedestal
+        function drawLine(startX, startY, endX, endY) {
+            const line = document.createElement("div");
+            line.style.position = "absolute";
+            line.style.backgroundColor = "red";
+            line.style.width = "5px";
+            line.style.height = `${Math.sqrt((endX - startX) ** 2 + (endY - startY) ** 2)}px`;
+            line.style.top = `${startY}px`;
+            line.style.left = `${startX}px`;
+            line.style.transformOrigin = "top left";
+            line.style.transform = `rotate(${Math.atan2(endY - startY, endX - startX)}rad)`;
+            gameContainer.appendChild(line);
+        }
+        
+        // Calculate and draw lines to each pedestal
+        const pedestals = document.querySelectorAll(".fruitPed, .culturePed, .equalityPed, .artPed, .heartPed, .volleyballPed");
+        pedestals.forEach(pedestal => {
+            const pedestalX = pedestal.offsetLeft + pedestal.clientWidth / 2;
+            const pedestalY = pedestal.offsetTop + pedestal.clientHeight / 2;
+            drawLine(centerX + spriteBox.clientWidth / 2, centerY + spriteBox.clientHeight / 2, pedestalX, pedestalY);
+        });
 
         document.addEventListener("keydown", (event) => {
             if (spriteMap[event.key]) {
