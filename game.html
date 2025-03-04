@@ -28,9 +28,10 @@ search_exclude: true
             display: flex;
             justify-content: center;
             align-items: center;
-            background-size: cover; /* Ensures the flooring covers the whole area */
-            background-image: url('sprites/floor.png'); /* Uses floor.png as the background */
-        }        
+            background-image: url('floor.png');
+            background-size: 40px 40px; /* Adjusts the tile size */
+            background-repeat: repeat; /* Ensures the texture tiles properly */
+        }            
 
         #sprite-box {
             width: 80px; /* Upscaled size */
