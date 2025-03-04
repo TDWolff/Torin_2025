@@ -177,24 +177,21 @@ search_exclude: true
                 updateSprite("walkForward.png");
             }
 
-            const offsetX = 60;
-            const offsetY = 60;
-        
             // Ensure the player stays within the map bounds
-            const halfSpriteWidth = spriteBox.clientWidth / 2 - offsetX;
-            const halfSpriteHeight = spriteBox.clientHeight / 2 - offsetY;
-        
+            const halfSpriteWidth = spriteBox.clientWidth / 2;
+            const halfSpriteHeight = spriteBox.clientHeight / 2;
+
             const minX = halfSpriteWidth;
             const maxX = mapWidth - halfSpriteWidth;
             const minY = halfSpriteHeight;
             const maxY = mapHeight - halfSpriteHeight;
-        
+
             targetX = Math.max(minX, Math.min(targetX, maxX));
             targetY = Math.max(minY, Math.min(targetY, maxY));
-        
+
             positionX = targetX;
             positionY = targetY;
-        
+
             gameContainer.style.transform = `translate(${-positionX + centerX}px, ${-positionY + centerY}px)`;
             spriteBox.style.left = `${positionX}px`;
             spriteBox.style.top = `${positionY}px`;
