@@ -176,17 +176,18 @@ search_exclude: true
                 targetY += speed;
                 updateSprite("walkForward.png");
             }
+
+            const offsetX = 20;
+            const offsetY = 20;
         
             // Ensure the player stays within the map bounds
-            const paddingX = 20; // Adjust this value to fine-tune the horizontal boundary
-            const paddingY = 20; // Adjust this value to fine-tune the vertical boundary
-            const halfSpriteWidth = spriteBox.clientWidth / 2;
-            const halfSpriteHeight = spriteBox.clientHeight / 2;
+            const halfSpriteWidth = spriteBox.clientWidth / 2 - offsetX;
+            const halfSpriteHeight = spriteBox.clientHeight / 2 - offsetY;
         
-            const minX = halfSpriteWidth + paddingX;
-            const maxX = mapWidth - halfSpriteWidth - paddingX;
-            const minY = halfSpriteHeight + paddingY;
-            const maxY = mapHeight - halfSpriteHeight - paddingY;
+            const minX = halfSpriteWidth;
+            const maxX = mapWidth - halfSpriteWidth;
+            const minY = halfSpriteHeight;
+            const maxY = mapHeight - halfSpriteHeight;
         
             targetX = Math.max(minX, Math.min(targetX, maxX));
             targetY = Math.max(minY, Math.min(targetY, maxY));
