@@ -74,9 +74,6 @@ search_exclude: true
             background-color: white;
             border: 2px solid black;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             display: none;
             z-index: 10;
             padding: 20px;
@@ -222,6 +219,13 @@ search_exclude: true
             }
         }
 
+        function showDialog() {
+            dialogBox.innerHTML = `You are interacting with: ${closestPedestalName}`;
+            dialogBox.style.left = `${window.innerWidth / 2 - dialogBox.clientWidth / 2}px`;
+            dialogBox.style.top = `${window.innerHeight / 2 - dialogBox.clientHeight / 2}px`;
+            dialogOpen = true;
+        }
+
         document.addEventListener("keydown", (event) => {
             if (dialogOpen) {
                 dialogBox.style.display = 'none';
@@ -247,9 +251,7 @@ search_exclude: true
                     moveCamera("down");
                 }
             } else if (event.key === " " && closestPedestal && closestPedestal.distance <= 100) {
-                dialogBox.innerHTML = `You are interacting with: ${closestPedestalName}`;
-                dialogBox.style.display = 'block';
-                dialogOpen = true;
+                showDialog();
             }
         });        
 
