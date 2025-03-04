@@ -44,13 +44,13 @@ search_exclude: true
         }        
 
         @keyframes walkAnimation {
-            0% { background-position-x: 0; }
-            100% { background-position-x: -32px; } /* Moves continuously */
+            0% { background-position: 0 0; } 
+            100% { background-position: -16px 0; } 
         }
         
         .walking {
-            animation: walkAnimation 0.2s steps(2) infinite; /* Faster and smoother */
-        }        
+            animation: walkAnimation 0.2s steps(2) infinite;
+        }         
     </style>
 </head>
 <body>
@@ -138,14 +138,16 @@ search_exclude: true
         document.addEventListener("keydown", (event) => {
             if (spriteMap[event.key]) {
                 event.preventDefault();
-                spriteBox.classList.add("walking");
+                if (!spriteBox.classList.contains("walking")) {
+                    spriteBox.classList.add("walking"); 
+                }
         
                 if (event.key === "a" || event.key === "ArrowLeft") {
                     moveCamera("left");
-                    isFlipped = true; // Keep the sprite flipped when moving left
+                    isFlipped = true;
                 } else if (event.key === "d" || event.key === "ArrowRight") {
                     moveCamera("right");
-                    isFlipped = false; // Reset flip when moving right
+                    isFlipped = false;
                 } else if (event.key === "w" || event.key === "ArrowUp") {
                     moveCamera("up");
                 } else if (event.key === "s" || event.key === "ArrowDown") {
@@ -157,9 +159,9 @@ search_exclude: true
         document.addEventListener("keyup", (event) => {
             if (spriteMap[event.key]) {
                 spriteBox.classList.remove("walking");
-                updateSprite(spriteMap[event.key], isFlipped); // Keep the flip state
+                updateSprite(spriteMap[event.key], isFlipped);
             }
-        });        
+        });              
 
         updateSprite("standForward.png");
     </script>    
