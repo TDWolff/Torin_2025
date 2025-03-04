@@ -171,16 +171,34 @@ search_exclude: true
         function drawLines() {
             ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
             const pedestals = document.querySelectorAll('.fruitPed, .culturePed, .artPed, .equalityPed, .volleyballPed, .heartPed');
+            let closestPedestal = null;
+            let closestDistance = Infinity;
+
             pedestals.forEach(pedestal => {
                 const rect = pedestal.getBoundingClientRect();
                 const pedestalX = rect.left + rect.width / 2 - gameContainer.getBoundingClientRect().left;
                 const pedestalY = rect.top + rect.height / 2 - gameContainer.getBoundingClientRect().top;
+                const distance = Math.hypot(pedestalX - (positionX + spriteBox.clientWidth / 2), pedestalY - (positionY + spriteBox.clientHeight / 2));
+
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestPedestal = { x: pedestalX, y: pedestalY };
+                }
+
                 ctx.beginPath();
                 ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
                 ctx.lineTo(pedestalX, pedestalY);
                 ctx.strokeStyle = 'white';
                 ctx.stroke();
             });
+
+            if (closestPedestal) {
+                ctx.beginPath();
+                ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
+                ctx.lineTo(closestPedestal.x, closestPedestal.y);
+                ctx.strokeStyle = 'red';
+                ctx.stroke();
+            }
         }
 
         document.addEventListener("keydown", (event) => {
