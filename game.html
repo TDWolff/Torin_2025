@@ -221,8 +221,8 @@ search_exclude: true
 
         function showDialog() {
             dialogBox.innerHTML = `You are interacting with: ${closestPedestalName}`;
-            dialogBox.style.left = `${positionX + spriteBox.clientWidth / 2 - dialogBox.clientWidth / 2}px`;
-            dialogBox.style.top = `${positionY + spriteBox.clientHeight / 2 - dialogBox.clientHeight / 2}px`;
+            dialogBox.style.left = `${(positionX + spriteBox.clientWidth / 2 - dialogBox.clientWidth / 2) - 500}px`;
+            dialogBox.style.top = `${(positionY + spriteBox.clientHeight / 2 - dialogBox.clientHeight / 2) - 100}px`;
             dialogBox.style.display = 'block';
             dialogOpen = true;
         }
