@@ -168,7 +168,7 @@ search_exclude: true
             const halfSpriteHeight = spriteBox.clientHeight / 2;
 
             const minX = 0;
-            const maxX = 720; // Adjusted for fixed width
+            const maxX = 2000; // Adjusted for fixed width
             const minY = 0;
             const maxY = 520; // Adjusted for fixed height
 
@@ -221,8 +221,8 @@ search_exclude: true
 
         function showDialog() {
             dialogBox.innerHTML = `You are interacting with: ${closestPedestalName}`;
-            dialogBox.style.left = `${window.innerWidth / 2 - dialogBox.clientWidth / 2}px`;
-            dialogBox.style.top = `${window.innerHeight / 2 - dialogBox.clientHeight / 2}px`;
+            dialogBox.style.left = `${positionX + spriteBox.clientWidth / 2 - dialogBox.clientWidth / 2}px`;
+            dialogBox.style.top = `${positionY + spriteBox.clientHeight / 2 - dialogBox.clientHeight / 2}px`;
             dialogBox.style.display = 'block';
             dialogOpen = true;
         }
