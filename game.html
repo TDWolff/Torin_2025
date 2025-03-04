@@ -181,10 +181,10 @@ search_exclude: true
             const halfSpriteWidth = spriteBox.clientWidth / 2;
             const halfSpriteHeight = spriteBox.clientHeight / 2;
         
-            const minX = centerX - mapWidth / 2 + halfSpriteWidth;
-            const maxX = centerX + mapWidth / 2 - halfSpriteWidth;
-            const minY = centerY - mapHeight / 2 + halfSpriteHeight;
-            const maxY = centerY + mapHeight / 2 - halfSpriteHeight;
+            const minX = halfSpriteWidth;
+            const maxX = mapWidth - halfSpriteWidth;
+            const minY = halfSpriteHeight;
+            const maxY = mapHeight - halfSpriteHeight;
         
             targetX = Math.max(minX, Math.min(targetX, maxX));
             targetY = Math.max(minY, Math.min(targetY, maxY));
