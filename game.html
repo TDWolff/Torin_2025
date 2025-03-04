@@ -40,6 +40,7 @@ search_exclude: true
             position: absolute;
             image-rendering: pixelated; /* Keeps edges crisp */
             background-repeat: no-repeat;
+            transition: none; /* Prevents smooth flipping animation */
         }
 
         @keyframes walkAnimation {
@@ -59,6 +60,7 @@ search_exclude: true
     </div>
 
     <script>
+        let isFlipped = false;
         const spriteBox = document.getElementById("sprite-box");
         const gameContainer = document.getElementById("game-container");
 
@@ -99,9 +101,10 @@ search_exclude: true
         const mapWidth = 2000; // Example map width
         const mapHeight = 2000; // Example map height
 
-        function updateSprite(sprite, flip = false) {
+        function updateSprite(sprite, flip = isFlipped) {
             spriteBox.style.backgroundImage = `url('sprites/${sprite}')`;
             spriteBox.style.transform = flip ? "scaleX(-1)" : "scaleX(1)";
+            isFlipped = flip; // Store the current flip state
         }
 
         function moveCamera(direction) {
@@ -136,11 +139,16 @@ search_exclude: true
         document.addEventListener("keydown", (event) => {
             if (spriteMap[event.key]) {
                 event.preventDefault();
-                spriteBox.classList.add("walking");
+                if (!spriteBox.classList.contains("walking")) {
+                    spriteBox.classList.add("walking"); 
+                }
+        
                 if (event.key === "a" || event.key === "ArrowLeft") {
                     moveCamera("left");
+                    isFlipped = true;
                 } else if (event.key === "d" || event.key === "ArrowRight") {
                     moveCamera("right");
+                    isFlipped = false;
                 } else if (event.key === "w" || event.key === "ArrowUp") {
                     moveCamera("up");
                 } else if (event.key === "s" || event.key === "ArrowDown") {
@@ -152,7 +160,7 @@ search_exclude: true
         document.addEventListener("keyup", (event) => {
             if (spriteMap[event.key]) {
                 spriteBox.classList.remove("walking");
-                updateSprite(spriteMap[event.key]);
+                updateSprite(spriteMap[event.key], isFlipped);
             }
         });
 
