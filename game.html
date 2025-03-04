@@ -153,7 +153,7 @@ search_exclude: true
             const minX = 0;
             const maxX = 1370;
             const minY = 0;
-            const maxY = 660;
+            const maxY = 690;
 
             targetX = Math.max(minX, Math.min(targetX, maxX));
             targetY = Math.max(minY, Math.min(targetY, maxY));
@@ -173,8 +173,8 @@ search_exclude: true
             const pedestals = document.querySelectorAll('.fruitPed, .culturePed, .artPed, .equalityPed, .volleyballPed, .heartPed');
             pedestals.forEach(pedestal => {
                 const rect = pedestal.getBoundingClientRect();
-                const pedestalX = rect.left + rect.width / 2;
-                const pedestalY = rect.top + rect.height / 2;
+                const pedestalX = rect.left + rect.width / 2 - gameContainer.getBoundingClientRect().left;
+                const pedestalY = rect.top + rect.height / 2 - gameContainer.getBoundingClientRect().top;
                 ctx.beginPath();
                 ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
                 ctx.lineTo(pedestalX, pedestalY);
