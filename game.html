@@ -21,8 +21,8 @@ search_exclude: true
         }
 
         #game-container {
-            width: 100vw;
-            height: 100vh;
+            width: 800px; /* Fixed width */
+            height: 600px; /* Fixed height */
             position: relative;
             overflow: hidden;
             display: flex;
@@ -86,7 +86,7 @@ search_exclude: true
 </head>
 <body>
     <div id="game-container">
-        <canvas id="game-canvas"></canvas>
+        <canvas id="game-canvas" width="800" height="600"></canvas> <!-- Fixed canvas size -->
         <div class="fruitPed" style="left: 350px; top: 50px;"></div>
         <div class="culturePed" style="left: 500px; top: 50px;"></div>
         <div class="equalityPed" style="left: 650px; top: 50px;"></div>
@@ -107,7 +107,7 @@ search_exclude: true
         const gameCanvas = document.getElementById("game-canvas");
         const ctx = gameCanvas.getContext("2d");
         const dialogBox = document.getElementById("dialog-box");
-    
+
         const speed = 10; // Increased speed for faster motion
         const spriteMap = {
             "w": "standBack.png",
@@ -119,7 +119,7 @@ search_exclude: true
             "ArrowDown": "standForward.png",
             "ArrowRight": "standRL.png"
         };
-    
+
         const walkSpriteMap = {
             "w": "walkBack.png",
             "a": "walkRL.png",
@@ -130,27 +130,27 @@ search_exclude: true
             "ArrowDown": "walkForward.png",
             "ArrowRight": "walkRL.png"
         };
-    
+
         // Center the sprite in the game container
         const centerX = gameContainer.clientWidth / 2 - spriteBox.clientWidth / 2;
         const centerY = gameContainer.clientHeight / 2 - spriteBox.clientHeight / 2;
         spriteBox.style.left = `${centerX}px`;
         spriteBox.style.top = `${centerY}px`;
-    
+
         let positionX = centerX;
         let positionY = centerY;
         let targetX = centerX;
         let targetY = centerY;
-    
+
         const mapWidth = 2000; // Example map width
         const mapHeight = 2000; // Example map height
-    
+
         function updateSprite(sprite, flip = isFlipped) {
             spriteBox.style.backgroundImage = `url('sprites/${sprite}')`;
             spriteBox.style.transform = flip ? "scaleX(-1)" : "scaleX(1)";
             isFlipped = flip; // Store the current flip state
         }        
-    
+
         function moveCamera(direction) {
             if (direction === "left") {
                 targetX -= speed;
@@ -165,53 +165,53 @@ search_exclude: true
                 targetY += speed;
                 updateSprite("walkForward.png");
             }
-    
+
             // Ensure the player stays within the map bounds
             const halfSpriteWidth = spriteBox.clientWidth / 2;
             const halfSpriteHeight = spriteBox.clientHeight / 2;
-    
+
             const minX = 0;
-            const maxX = 1370;
+            const maxX = 720; // Adjusted for fixed width
             const minY = 0;
-            const maxY = 690;
-    
+            const maxY = 520; // Adjusted for fixed height
+
             targetX = Math.max(minX, Math.min(targetX, maxX));
             targetY = Math.max(minY, Math.min(targetY, maxY));
-    
+
             positionX = targetX;
             positionY = targetY;
-    
+
             gameContainer.style.transform = `translate(${-positionX + centerX}px, ${-positionY + centerY}px)`;
             spriteBox.style.left = `${positionX}px`;
             spriteBox.style.top = `${positionY}px`;
-    
+
             drawLines();
         }
-    
+
         function drawLines() {
             ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
             const pedestals = document.querySelectorAll('.fruitPed, .culturePed, .artPed, .equalityPed, .volleyballPed, .heartPed');
             closestPedestal = null; // Reset closestPedestal
             let closestDistance = Infinity;
-    
+
             pedestals.forEach(pedestal => {
                 const rect = pedestal.getBoundingClientRect();
                 const pedestalX = rect.left + rect.width / 2 - gameContainer.getBoundingClientRect().left;
                 const pedestalY = rect.top + rect.height / 2 - gameContainer.getBoundingClientRect().top;
                 const distance = Math.hypot(pedestalX - (positionX + spriteBox.clientWidth / 2), pedestalY - (positionY + spriteBox.clientHeight / 2));
-    
+
                 if (distance < closestDistance) {
                     closestDistance = distance;
                     closestPedestal = { x: pedestalX, y: pedestalY, distance: distance, name: pedestal.className };
                 }
-    
+
                 ctx.beginPath();
                 ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
                 ctx.lineTo(pedestalX, pedestalY);
                 ctx.strokeStyle = 'white';
                 ctx.stroke();
             });
-    
+
             if (closestPedestal) {
                 ctx.beginPath();
                 ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
@@ -221,14 +221,14 @@ search_exclude: true
                 closestPedestalName = closestPedestal.name;
             }
         }
-    
+
         document.addEventListener("keydown", (event) => {
             if (dialogOpen) {
                 dialogBox.style.display = 'none';
                 dialogOpen = false;
                 return;
             }
-    
+
             if (spriteMap[event.key]) {
                 event.preventDefault();
                 if (!spriteBox.classList.contains("walking")) {
@@ -252,19 +252,19 @@ search_exclude: true
                 dialogOpen = true;
             }
         });        
-    
+
         document.addEventListener("keyup", (event) => {
             if (spriteMap[event.key]) {
                 spriteBox.classList.remove("walking");
                 updateSprite(spriteMap[event.key], isFlipped);
             }
         });              
-    
+
         updateSprite("standForward.png");
-    
+
         // Set canvas size to match game container
         gameCanvas.width = gameContainer.clientWidth;
         gameCanvas.height = gameContainer.clientHeight;
-    </script>       
+    </script>    
 </body>
 </html>
