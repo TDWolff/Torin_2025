@@ -178,13 +178,15 @@ search_exclude: true
             }
         
             // Ensure the player stays within the map bounds
+            const paddingX = 20; // Adjust this value to fine-tune the horizontal boundary
+            const paddingY = 20; // Adjust this value to fine-tune the vertical boundary
             const halfSpriteWidth = spriteBox.clientWidth / 2;
             const halfSpriteHeight = spriteBox.clientHeight / 2;
         
-            const minX = halfSpriteWidth;
-            const maxX = mapWidth - halfSpriteWidth;
-            const minY = halfSpriteHeight;
-            const maxY = mapHeight - halfSpriteHeight;
+            const minX = halfSpriteWidth + paddingX;
+            const maxX = mapWidth - halfSpriteWidth - paddingX;
+            const minY = halfSpriteHeight + paddingY;
+            const maxY = mapHeight - halfSpriteHeight - paddingY;
         
             targetX = Math.max(minX, Math.min(targetX, maxX));
             targetY = Math.max(minY, Math.min(targetY, maxY));
