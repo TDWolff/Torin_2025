@@ -28,10 +28,9 @@ search_exclude: true
             display: flex;
             justify-content: center;
             align-items: center;
-            background-size: 50px 50px;
-            background-image: linear-gradient(transparent 49px, rgba(255, 255, 255, 0.2) 50px),
-                              linear-gradient(90deg, transparent 49px, rgba(255, 255, 255, 0.2) 50px);
-        }
+            background-size: cover; /* Ensures the flooring covers the whole area */
+            background-image: url('floor.png'); /* Uses floor.png as the background */
+        }        
 
         #sprite-box {
             width: 80px; /* Upscaled size */
