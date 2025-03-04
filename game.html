@@ -36,20 +36,20 @@ search_exclude: true
         #sprite-box {
             width: 80px; /* Upscaled size */
             height: 80px; /* Upscaled size */
-            background-size: 32px 16px;  /* Ensures the sprite fits nicely */
+            background-size: cover;  /* Ensures the sprite fits nicely */
             position: absolute;
+            transition: transform 0.1s ease;
             image-rendering: pixelated; /* Keeps edges crisp */
             background-repeat: no-repeat;
         }
 
         @keyframes walkAnimation {
             0% { background-position: 0 0; }
-            50% { background-position: -16px 0; }
-            100% { background-position: -32px 0; }
+            100% { background-position: 16px 0; }
         }
 
         .walking {
-            animation: walkAnimation 0.5s steps(2) infinite;
+            animation: walkAnimation 0.5s steps(1) infinite;
         }
     </style>
 </head>
