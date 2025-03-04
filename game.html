@@ -53,58 +53,25 @@ search_exclude: true
             animation: walkAnimation 0.2s steps(2) infinite;
         }      
 
-        .fruitPed {
+        .fruitPed, .culturePed, .artPed, .equalityPed, .volleyballPed, .heartPed {
             width: 80px;
             height: 80px;
             image-rendering: pixelated; /* Keeps edges crisp */
-            background-image: url('sprites/foodPed.png');
             background-size: cover;
             position: absolute;
-        }   
-        .culturePed {
-            width: 80px;
-            height: 80px;
-            image-rendering: pixelated; /* Keeps edges crisp */
-            background-image: url('sprites/culturePed.png');
-            background-size: cover;
-            position: absolute;
-        }   
-        .artPed {
-            width: 80px;
-            height: 80px;
-            image-rendering: pixelated; /* Keeps edges crisp */
-            background-image: url('sprites/artPed.png');
-            background-size: cover;
-            position: absolute;
-        }   
-        .equalityPed {
-            width: 80px;
-            height: 80px;
-            image-rendering: pixelated; /* Keeps edges crisp */
-            background-image: url('sprites/equalityPed.png');
-            background-size: cover;
-            position: absolute;
-        }   
-        .volleyballPed {
-            width: 80px;
-            height: 80px;
-            image-rendering: pixelated; /* Keeps edges crisp */
-            background-image: url('sprites/volleyballPed.png');
-            background-size: cover;
-            position: absolute;
-        }   
-        .heartPed {
-            width: 80px;
-            height: 80px;
-            image-rendering: pixelated; /* Keeps edges crisp */
-            background-image: url('sprites/heartPed.png');
-            background-size: cover;
-            position: absolute;
-        }   
+        }
+
+        .fruitPed { background-image: url('sprites/foodPed.png'); }
+        .culturePed { background-image: url('sprites/culturePed.png'); }
+        .artPed { background-image: url('sprites/artPed.png'); }
+        .equalityPed { background-image: url('sprites/equalityPed.png'); }
+        .volleyballPed { background-image: url('sprites/volleyballPed.png'); }
+        .heartPed { background-image: url('sprites/heartPed.png'); }
     </style>
 </head>
 <body>
     <div id="game-container">
+        <canvas id="game-canvas"></canvas>
         <div class="fruitPed" style="left: 350px; top: 50px;"></div>
         <div class="culturePed" style="left: 500px; top: 50px;"></div>
         <div class="equalityPed" style="left: 650px; top: 50px;"></div>
@@ -118,6 +85,8 @@ search_exclude: true
         let isFlipped = false;
         const spriteBox = document.getElementById("sprite-box");
         const gameContainer = document.getElementById("game-container");
+        const gameCanvas = document.getElementById("game-canvas");
+        const ctx = gameCanvas.getContext("2d");
 
         const speed = 10; // Increased speed for faster motion
         const spriteMap = {
@@ -195,7 +164,24 @@ search_exclude: true
             gameContainer.style.transform = `translate(${-positionX + centerX}px, ${-positionY + centerY}px)`;
             spriteBox.style.left = `${positionX}px`;
             spriteBox.style.top = `${positionY}px`;
-        }        
+
+            drawLines();
+        }
+
+        function drawLines() {
+            ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+            const pedestals = document.querySelectorAll('.fruitPed, .culturePed, .artPed, .equalityPed, .volleyballPed, .heartPed');
+            pedestals.forEach(pedestal => {
+                const rect = pedestal.getBoundingClientRect();
+                const pedestalX = rect.left + rect.width / 2;
+                const pedestalY = rect.top + rect.height / 2;
+                ctx.beginPath();
+                ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
+                ctx.lineTo(pedestalX, pedestalY);
+                ctx.strokeStyle = 'white';
+                ctx.stroke();
+            });
+        }
 
         document.addEventListener("keydown", (event) => {
             if (spriteMap[event.key]) {
@@ -226,6 +212,10 @@ search_exclude: true
         });              
 
         updateSprite("standForward.png");
+
+        // Set canvas size to match game container
+        gameCanvas.width = gameContainer.clientWidth;
+        gameCanvas.height = gameContainer.clientHeight;
     </script>    
 </body>
 </html>
