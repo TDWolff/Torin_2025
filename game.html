@@ -30,7 +30,7 @@ search_exclude: true
             align-items: center;
             image-rendering: pixelated; /* Keeps edges crisp */
             background-image: url('sprites/flooring.png');
-            background-size: 40px 40px; /* Adjusts the tile size */
+            background-size: 60px 60px; /* Adjusts the tile size */
             background-repeat: repeat; /* Ensures the texture tiles properly */
         }            
 
@@ -176,20 +176,26 @@ search_exclude: true
                 targetY += speed;
                 updateSprite("walkForward.png");
             }
-
-            // Boundary checks
-            targetX = Math.max(centerX - mapWidth / 2, Math.min(targetX, centerX + mapWidth / 2 - spriteBox.clientWidth));
-            targetY = Math.max(centerY - mapHeight / 2, Math.min(targetY, centerY + mapHeight / 2 - spriteBox.clientHeight));
-
-            // Update the sprite position to move with the camera
+        
+            // Ensure the player stays within the map bounds
+            const halfSpriteWidth = spriteBox.clientWidth / 2;
+            const halfSpriteHeight = spriteBox.clientHeight / 2;
+        
+            const minX = centerX - mapWidth / 2 + halfSpriteWidth;
+            const maxX = centerX + mapWidth / 2 - halfSpriteWidth;
+            const minY = centerY - mapHeight / 2 + halfSpriteHeight;
+            const maxY = centerY + mapHeight / 2 - halfSpriteHeight;
+        
+            targetX = Math.max(minX, Math.min(targetX, maxX));
+            targetY = Math.max(minY, Math.min(targetY, maxY));
+        
             positionX = targetX;
             positionY = targetY;
-
-            // Move the "camera" (the game world) around the player
+        
             gameContainer.style.transform = `translate(${-positionX + centerX}px, ${-positionY + centerY}px)`;
             spriteBox.style.left = `${positionX}px`;
             spriteBox.style.top = `${positionY}px`;
-        }
+        }        
 
         document.addEventListener("keydown", (event) => {
             if (spriteMap[event.key]) {
