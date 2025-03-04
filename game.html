@@ -154,15 +154,14 @@ search_exclude: true
                     moveCamera("down");
                 }
             }
-        });
-        
+        });        
 
         document.addEventListener("keyup", (event) => {
             if (spriteMap[event.key]) {
                 spriteBox.classList.remove("walking");
-                updateSprite(spriteMap[event.key], isFlipped); // Keep the flip state
+                updateSprite(spriteMap[event.key], isFlipped);
             }
-        });        
+        });              
 
         updateSprite("standForward.png");
     </script>    
