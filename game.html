@@ -38,10 +38,10 @@ search_exclude: true
             height: 80px; /* Upscaled size */
             background-size: cover;  /* Ensures the sprite fits nicely */
             position: absolute;
-            transition: transform 0.1s ease;
             image-rendering: pixelated; /* Keeps edges crisp */
             background-repeat: no-repeat;
-        }
+            transition: none; /* Prevents smooth flipping animation */
+        }        
 
         @keyframes walkAnimation {
             0% { background-position: 0 0; }
