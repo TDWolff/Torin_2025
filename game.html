@@ -221,8 +221,15 @@ search_exclude: true
 
         function showDialog() {
             dialogBox.innerHTML = `You are interacting with: ${closestPedestalName}`;
-            dialogBox.style.left = `${(positionX + spriteBox.clientWidth / 2 - dialogBox.clientWidth / 2) - 100}px`;
-            dialogBox.style.top = `${(positionY + spriteBox.clientHeight / 2 - dialogBox.clientHeight / 2) - 200}px`;
+            let dialogX = positionX + spriteBox.clientWidth / 2 - dialogBox.clientWidth / 2;
+            let dialogY = positionY + spriteBox.clientHeight / 2 - dialogBox.clientHeight / 2;
+
+            // Ensure the dialog box is within the viewport
+            dialogX = Math.max(0, Math.min(dialogX, window.innerWidth - dialogBox.clientWidth));
+            dialogY = Math.max(0, Math.min(dialogY, window.innerHeight - dialogBox.clientHeight));
+
+            dialogBox.style.left = `${dialogX}px`;
+            dialogBox.style.top = `${dialogY}px`;
             dialogBox.style.display = 'block';
             dialogOpen = true;
         }
