@@ -36,22 +36,21 @@ search_exclude: true
         #sprite-box {
             width: 80px; /* Upscaled size */
             height: 80px; /* Upscaled size */
-            background-size: 32px 16px;  /* Ensures the sprite fits nicely */
+            background-size: cover;  /* Ensures the sprite fits nicely */
             position: absolute;
             image-rendering: pixelated; /* Keeps edges crisp */
             background-repeat: no-repeat;
             transition: none; /* Prevents smooth flipping animation */
-        }
+        }        
 
         @keyframes walkAnimation {
-            0% { background-position: 0 0; }
-            50% { background-position: -16px 0; }
-            100% { background-position: -32px 0; }
+            0% { background-position: 0 0; } 
+            100% { background-position: -16px 0; } 
         }
-
+        
         .walking {
-            animation: walkAnimation 0.5s steps(2) infinite;
-        }
+            animation: walkAnimation 0.2s steps(2) infinite;
+        }         
     </style>
 </head>
 <body>
@@ -64,7 +63,7 @@ search_exclude: true
         const spriteBox = document.getElementById("sprite-box");
         const gameContainer = document.getElementById("game-container");
 
-        const speed = 5; // Speed of the player
+        const speed = 5; // Increased speed for faster motion
         const spriteMap = {
             "w": "standBack.png",
             "a": "standRL.png",
@@ -105,7 +104,7 @@ search_exclude: true
             spriteBox.style.backgroundImage = `url('sprites/${sprite}')`;
             spriteBox.style.transform = flip ? "scaleX(-1)" : "scaleX(1)";
             isFlipped = flip; // Store the current flip state
-        }
+        }        
 
         function moveCamera(direction) {
             if (direction === "left") {
@@ -156,13 +155,14 @@ search_exclude: true
                 }
             }
         });
+        
 
         document.addEventListener("keyup", (event) => {
             if (spriteMap[event.key]) {
                 spriteBox.classList.remove("walking");
-                updateSprite(spriteMap[event.key], isFlipped);
+                updateSprite(spriteMap[event.key], isFlipped); // Keep the flip state
             }
-        });
+        });        
 
         updateSprite("standForward.png");
     </script>    
