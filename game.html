@@ -53,54 +53,27 @@ search_exclude: true
             animation: walkAnimation 0.2s steps(2) infinite;
         }      
 
-        .fruitPed {
+        .fruitPed, .culturePed, .artPed, .equalityPed, .volleyballPed, .heartPed {
             width: 80px;
             height: 80px;
             image-rendering: pixelated; /* Keeps edges crisp */
-            background-image: url('sprites/foodPed.png');
             background-size: cover;
             position: absolute;
-        }   
-        .culturePed {
-            width: 80px;
-            height: 80px;
-            image-rendering: pixelated; /* Keeps edges crisp */
-            background-image: url('sprites/culturePed.png');
-            background-size: cover;
+        }
+
+        .fruitPed { background-image: url('sprites/foodPed.png'); }
+        .culturePed { background-image: url('sprites/culturePed.png'); }
+        .artPed { background-image: url('sprites/artPed.png'); }
+        .equalityPed { background-image: url('sprites/equalityPed.png'); }
+        .volleyballPed { background-image: url('sprites/volleyballPed.png'); }
+        .heartPed { background-image: url('sprites/heartPed.png'); }
+
+        .line {
             position: absolute;
-        }   
-        .artPed {
-            width: 80px;
-            height: 80px;
-            image-rendering: pixelated; /* Keeps edges crisp */
-            background-image: url('sprites/artPed.png');
-            background-size: cover;
-            position: absolute;
-        }   
-        .equalityPed {
-            width: 80px;
-            height: 80px;
-            image-rendering: pixelated; /* Keeps edges crisp */
-            background-image: url('sprites/equalityPed.png');
-            background-size: cover;
-            position: absolute;
-        }   
-        .volleyballPed {
-            width: 80px;
-            height: 80px;
-            image-rendering: pixelated; /* Keeps edges crisp */
-            background-image: url('sprites/volleyballPed.png');
-            background-size: cover;
-            position: absolute;
-        }   
-        .heartPed {
-            width: 80px;
-            height: 80px;
-            image-rendering: pixelated; /* Keeps edges crisp */
-            background-image: url('sprites/heartPed.png');
-            background-size: cover;
-            position: absolute;
-        }   
+            background-color: red;
+            width: 2px;
+            transform-origin: top left;
+        }
     </style>
 </head>
 <body>
@@ -181,10 +154,10 @@ search_exclude: true
             const halfSpriteWidth = spriteBox.clientWidth / 2;
             const halfSpriteHeight = spriteBox.clientHeight / 2;
 
-            const minX = 0;
-            const maxX = 1400;
-            const minY = 0;
-            const maxY = 6800;
+            const minX = halfSpriteWidth;
+            const maxX = mapWidth - halfSpriteWidth;
+            const minY = halfSpriteHeight;
+            const maxY = mapHeight - halfSpriteHeight;
 
             targetX = Math.max(minX, Math.min(targetX, maxX));
             targetY = Math.max(minY, Math.min(targetY, maxY));
@@ -195,29 +168,44 @@ search_exclude: true
             gameContainer.style.transform = `translate(${-positionX + centerX}px, ${-positionY + centerY}px)`;
             spriteBox.style.left = `${positionX}px`;
             spriteBox.style.top = `${positionY}px`;
-        }     
 
-        // Draw lines from the player to each pedestal
+            updateLines();
+        }
+
         function drawLine(startX, startY, endX, endY) {
             const line = document.createElement("div");
-            line.style.position = "absolute";
-            line.style.backgroundColor = "red";
-            line.style.width = "5px";
-            line.style.height = `${Math.sqrt((endX - startX) ** 2 + (endY - startY) ** 2)}px`;
+            line.classList.add("line");
+            const length = Math.sqrt((endX - startX) ** 2 + (endY - startY) ** 2);
+            line.style.height = `${length}px`;
             line.style.top = `${startY}px`;
             line.style.left = `${startX}px`;
-            line.style.transformOrigin = "top left";
-            line.style.transform = `rotate(${Math.atan2(endY - startY, endX - startX)}rad)`;
+            const angle = Math.atan2(endY - startY, endX - startX);
+            line.style.transform = `rotate(${angle}rad)`;
             gameContainer.appendChild(line);
+            return line;
         }
-        
-        // Calculate and draw lines to each pedestal
+
+        const lines = [];
         const pedestals = document.querySelectorAll(".fruitPed, .culturePed, .equalityPed, .artPed, .heartPed, .volleyballPed");
         pedestals.forEach(pedestal => {
             const pedestalX = pedestal.offsetLeft + pedestal.clientWidth / 2;
             const pedestalY = pedestal.offsetTop + pedestal.clientHeight / 2;
-            drawLine(centerX + spriteBox.clientWidth / 2, centerY + spriteBox.clientHeight / 2, pedestalX, pedestalY);
+            const line = drawLine(centerX + spriteBox.clientWidth / 2, centerY + spriteBox.clientHeight / 2, pedestalX, pedestalY);
+            lines.push({ line, pedestalX, pedestalY });
         });
+
+        function updateLines() {
+            lines.forEach(({ line, pedestalX, pedestalY }) => {
+                const startX = positionX + spriteBox.clientWidth / 2;
+                const startY = positionY + spriteBox.clientHeight / 2;
+                const length = Math.sqrt((pedestalX - startX) ** 2 + (pedestalY - startY) ** 2);
+                line.style.height = `${length}px`;
+                line.style.top = `${startY}px`;
+                line.style.left = `${startX}px`;
+                const angle = Math.atan2(pedestalY - startY, pedestalX - startX);
+                line.style.transform = `rotate(${angle}rad)`;
+            });
+        }
 
         document.addEventListener("keydown", (event) => {
             if (spriteMap[event.key]) {
