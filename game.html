@@ -50,12 +50,30 @@ search_exclude: true
         
         .walking {
             animation: walkAnimation 0.2s steps(2) infinite;
-        }         
+        }      
+
+        .fruitPed {
+            width: 40px;
+            height: 40px;
+            background-image: url('sprites/fruitPed.png');
+            background-size: cover;
+            position: absolute;
+        }   
+
+        .culturePed {
+            width: 40px;
+            height: 40px;
+            background-image: url('sprites/culturePed.png');
+            background-size: cover;
+            position: absolute;
+        }   
     </style>
 </head>
 <body>
     <div id="game-container">
         <div id="sprite-box"></div>
+        <div class="fruitPed" style="left: 200px; top: 300px;"></div>
+        <div class="culturePed" style="left: 500px; top: 700px;"></div>
     </div>
 
     <script>
