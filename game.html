@@ -182,7 +182,7 @@ search_exclude: true
 
                 if (distance < closestDistance) {
                     closestDistance = distance;
-                    closestPedestal = { x: pedestalX, y: pedestalY };
+                    closestPedestal = { x: pedestalX, y: pedestalY, distance: distance };
                 }
 
                 ctx.beginPath();
@@ -196,7 +196,7 @@ search_exclude: true
                 ctx.beginPath();
                 ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
                 ctx.lineTo(closestPedestal.x, closestPedestal.y);
-                ctx.strokeStyle = 'red';
+                ctx.strokeStyle = closestPedestal.distance <= 5 ? 'green' : 'red';
                 ctx.stroke();
             }
         }
