@@ -100,6 +100,7 @@ search_exclude: true
     <script>
         let isFlipped = false;
         let dialogOpen = false;
+        let closestPedestalName = '';
         const spriteBox = document.getElementById("sprite-box");
         const gameContainer = document.getElementById("game-container");
         const gameCanvas = document.getElementById("game-canvas");
@@ -200,7 +201,7 @@ search_exclude: true
 
                 if (distance < closestDistance) {
                     closestDistance = distance;
-                    closestPedestal = { x: pedestalX, y: pedestalY, distance: distance };
+                    closestPedestal = { x: pedestalX, y: pedestalY, distance: distance, name: pedestal.className };
                 }
 
                 ctx.beginPath();
@@ -216,6 +217,7 @@ search_exclude: true
                 ctx.lineTo(closestPedestal.x, closestPedestal.y);
                 ctx.strokeStyle = closestPedestal.distance <= 5 ? 'green' : 'red';
                 ctx.stroke();
+                closestPedestalName = closestPedestal.name;
             }
         }
 
@@ -244,6 +246,7 @@ search_exclude: true
                     moveCamera("down");
                 }
             } else if (event.key === " " && closestPedestal && closestPedestal.distance <= 100) {
+                dialogBox.innerHTML = `You are interacting with: ${closestPedestalName}`;
                 dialogBox.style.display = 'block';
                 dialogOpen = true;
             }
