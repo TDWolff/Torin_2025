@@ -91,7 +91,7 @@ search_exclude: true
         <div class="artPed" style="left: 800px; top: 50px;"></div>
         <div class="heartPed" style="left: 950px; top: 50px;"></div>
         <div class="volleyballPed" style="left: 1100px; top: 50px;"></div>
-        <div class="bookPed" style="left: 725px; top: 250px;"></div>
+        <div class="bookPed" style="left: 725px; top: 550px;"></div>
         <div id="sprite-box"></div>
         <div id="dialog-box">This is a dialog box. Press any key to close.</div>
     </div>
@@ -222,7 +222,11 @@ search_exclude: true
         }
 
         function showDialog() {
-            dialogBox.innerHTML = `You are interacting with: ${closestPedestalName}`;
+            if (closestPedestalName.includes('bookPed')) {
+                dialogBox.innerHTML = `<img src="sprites/bookPedArt.png" alt="Book Image" style="width: 100%; height: 100%;">`;
+            } else {
+                dialogBox.innerHTML = `You are interacting with: ${closestPedestalName}`;
+            }
             let dialogX = (positionX + spriteBox.clientWidth / 2 - dialogBox.clientWidth / 2) - 200;
             let dialogY = (positionY + spriteBox.clientHeight / 2 - dialogBox.clientHeight / 2) - 100;
 
