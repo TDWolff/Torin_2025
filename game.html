@@ -80,6 +80,19 @@ search_exclude: true
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
+
+        #initial-dialog {
+            width: 500px;
+            height: 350px;
+            background-color: white;
+            border: 2px solid black;
+            position: absolute;
+            display: block;
+            z-index: 20;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -94,6 +107,13 @@ search_exclude: true
         <div class="bookPed" style="left: 725px; top: 550px;"></div>
         <div id="sprite-box"></div>
         <div id="dialog-box">This is a dialog box. Press any key to close.</div>
+        <div id="initial-dialog">
+            <h2>Welcome to my American Literature Final!</h2>
+            <p>Use the arrow keys or WASD to move your character.</p>
+            <p>When you approach a pedestal and the line turns green, press the spacebar to interact with it.</p>
+            <p></p>
+            <p>Press any key to start the game.</p>
+        </div>
     </div>
 
     <script>
@@ -106,7 +126,8 @@ search_exclude: true
         const gameCanvas = document.getElementById("game-canvas");
         const ctx = gameCanvas.getContext("2d");
         const dialogBox = document.getElementById("dialog-box");
-    
+        const initialDialog = document.getElementById("initial-dialog");
+
         const speed = 10; // Increased speed for faster motion
         const diagonalSpeed = speed / Math.sqrt(2); // Adjusted speed for diagonal movement
         const spriteMap = {
@@ -119,7 +140,7 @@ search_exclude: true
             "ArrowDown": "standForward.png",
             "ArrowRight": "standRL.png"
         };
-    
+
         const walkSpriteMap = {
             "w": "walkBack.png",
             "a": "walkRL.png",
@@ -130,33 +151,33 @@ search_exclude: true
             "ArrowDown": "walkForward.png",
             "ArrowRight": "walkRL.png"
         };
-    
+
         const pressedKeys = new Set();
-    
+
         // Center the sprite in the game container
         const centerX = gameContainer.clientWidth / 2 - spriteBox.clientWidth / 2;
         const centerY = gameContainer.clientHeight / 2 - spriteBox.clientHeight / 2;
         spriteBox.style.left = `${centerX}px`;
         spriteBox.style.top = `${centerY}px`;
-    
+
         let positionX = centerX;
         let positionY = centerY;
         let targetX = centerX;
         let targetY = centerY;
-    
+
         const mapWidth = 2000; // Example map width
         const mapHeight = 2000; // Example map height
-    
+
         function updateSprite(sprite, flip = isFlipped) {
             spriteBox.style.backgroundImage = `url('sprites/${sprite}')`;
             spriteBox.style.transform = flip ? "scaleX(-1)" : "scaleX(1)";
             isFlipped = flip; // Store the current flip state
         }        
-    
+
         function moveCamera() {
             let moveX = 0;
             let moveY = 0;
-    
+
             if (pressedKeys.has("a") || pressedKeys.has("ArrowLeft")) {
                 moveX -= 1;
                 updateSprite("walkRL.png", true);
@@ -173,7 +194,7 @@ search_exclude: true
                 moveY += 1;
                 updateSprite("walkForward.png");
             }
-    
+
             // Adjust speed for diagonal movement
             if (moveX !== 0 && moveY !== 0) {
                 moveX *= diagonalSpeed;
@@ -182,68 +203,66 @@ search_exclude: true
                 moveX *= speed;
                 moveY *= speed;
             }
-    
+
             targetX += moveX;
             targetY += moveY;
-    
+
             // Ensure the player stays within the map bounds
             const halfSpriteWidth = spriteBox.clientWidth / 2;
             const halfSpriteHeight = spriteBox.clientHeight / 2;
-    
+
             const minX = 0;
             const maxX = 2000; // Adjusted for fixed width
             const minY = 0;
             const maxY = 520; // Adjusted for fixed height
-    
+
             targetX = Math.max(minX, Math.min(targetX, maxX));
             targetY = Math.max(minY, Math.min(targetY, maxY));
-    
+
             positionX = targetX;
             positionY = targetY;
-    
+
             gameContainer.style.transform = `translate(${-positionX + centerX}px, ${-positionY + centerY}px)`;
             spriteBox.style.left = `${positionX}px`;
             spriteBox.style.top = `${positionY}px`;
-    
+
             drawLines();
         }
-    
+
         function drawLines() {
             ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
             const pedestals = document.querySelectorAll('.fruitPed, .culturePed, .artPed, .equalityPed, .volleyballPed, .heartPed, .bookPed');
             closestPedestal = null; // Reset closestPedestal
             let closestDistance = Infinity;
-    
+
             pedestals.forEach(pedestal => {
                 const rect = pedestal.getBoundingClientRect();
                 const pedestalX = rect.left + rect.width / 2 - gameContainer.getBoundingClientRect().left;
                 const pedestalY = rect.top + rect.height / 2 - gameContainer.getBoundingClientRect().top;
                 const distance = Math.hypot(pedestalX - (positionX + spriteBox.clientWidth / 2), pedestalY - (positionY + spriteBox.clientHeight / 2));
-    
+
                 if (distance < closestDistance) {
                     closestDistance = distance;
                     closestPedestal = { x: pedestalX, y: pedestalY, distance: distance, name: pedestal.className };
                 }
-    
-                // ctx.beginPath();
-                // ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
-                // ctx.lineTo(pedestalX, pedestalY);
-                // ctx.strokeStyle = 'white';
-                // ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
+                ctx.lineTo(pedestalX, pedestalY);
+                ctx.strokeStyle = 'white';
+                ctx.stroke();
             });
-    
+
             if (closestPedestal) {
                 ctx.beginPath();
                 ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
                 ctx.lineTo(closestPedestal.x, closestPedestal.y);
-                ctx.strokeStyle = closestPedestal.distance <= 200 ? 'green' : 'red';
-                // increase stroke width
-                ctx.lineWidth = 5;
+                ctx.strokeStyle = closestPedestal.distance <= 100 ? 'green' : 'red';
                 ctx.stroke();
                 closestPedestalName = closestPedestal.name;
             }
         }
-    
+
         function showDialog() {
             if (closestPedestalName.includes('bookPed')) {
                 dialogBox.innerHTML = `<img src="sprites/bookPedArt.png" alt="Book Image" style="width: 100%; height: 100%;">`;
@@ -252,24 +271,29 @@ search_exclude: true
             }
             let dialogX = (positionX + spriteBox.clientWidth / 2 - dialogBox.clientWidth / 2) - 200;
             let dialogY = (positionY + spriteBox.clientHeight / 2 - dialogBox.clientHeight / 2) - 100;
-    
+
             // Ensure the dialog box is within the viewport
             dialogX = Math.max(0, Math.min(dialogX, window.innerWidth - dialogBox.clientWidth));
             dialogY = Math.max(0, Math.min(dialogY, window.innerHeight - dialogBox.clientHeight));
-    
+
             dialogBox.style.left = `${dialogX}px`;
             dialogBox.style.top = `${dialogY}px`;
             dialogBox.style.display = 'block';
             dialogOpen = true;
         }
-    
+
         document.addEventListener("keydown", (event) => {
+            if (initialDialog.style.display === 'block') {
+                initialDialog.style.display = 'none';
+                return;
+            }
+
             if (dialogOpen) {
                 dialogBox.style.display = 'none';
                 dialogOpen = false;
                 return;
             }
-    
+
             if (spriteMap[event.key]) {
                 event.preventDefault();
                 pressedKeys.add(event.key);
@@ -277,11 +301,11 @@ search_exclude: true
                     spriteBox.classList.add("walking"); 
                 }
                 moveCamera();
-            } else if (event.key === " " && closestPedestal && closestPedestal.distance <= 200) {
+            } else if (event.key === " " && closestPedestal && closestPedestal.distance <= 100) {
                 showDialog();
             }
         });        
-    
+
         document.addEventListener("keyup", (event) => {
             if (spriteMap[event.key]) {
                 pressedKeys.delete(event.key);
@@ -293,9 +317,9 @@ search_exclude: true
                 }
             }
         });              
-    
+
         updateSprite("standForward.png");
-    
+
         // Set canvas size to match game container
         gameCanvas.width = gameContainer.clientWidth;
         gameCanvas.height = gameContainer.clientHeight;
