@@ -282,6 +282,13 @@ search_exclude: true
             dialogOpen = true;
         }
 
+        document.addEventListener("keydown", function () {
+            const initialDialog = document.getElementById("initial-dialog");
+            if (initialDialog.style.display !== "none") {
+                initialDialog.style.display = "none";
+            }
+        });        
+
         document.addEventListener("keydown", (event) => {
             if (initialDialog.style.display === 'block') {
                 initialDialog.style.display = 'none';
