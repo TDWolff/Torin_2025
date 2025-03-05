@@ -53,7 +53,7 @@ search_exclude: true
             animation: walkAnimation 0.2s steps(2) infinite;
         }      
 
-        .fruitPed, .culturePed, .artPed, .equalityPed, .volleyballPed, .heartPed, .bookPed{
+        .fruitPed, .culturePed, .artPed, .equalityPed, .volleyballPed, .heartPed, .bookPed {
             width: 80px;
             height: 80px;
             image-rendering: pixelated;
@@ -130,6 +130,8 @@ search_exclude: true
             "ArrowRight": "walkRL.png"
         };
 
+        const pressedKeys = new Set();
+
         // Center the sprite in the game container
         const centerX = gameContainer.clientWidth / 2 - spriteBox.clientWidth / 2;
         const centerY = gameContainer.clientHeight / 2 - spriteBox.clientHeight / 2;
@@ -150,17 +152,20 @@ search_exclude: true
             isFlipped = flip; // Store the current flip state
         }        
 
-        function moveCamera(direction) {
-            if (direction === "left") {
+        function moveCamera() {
+            if (pressedKeys.has("a") || pressedKeys.has("ArrowLeft")) {
                 targetX -= speed;
                 updateSprite("walkRL.png", true);
-            } else if (direction === "right") {
+            }
+            if (pressedKeys.has("d") || pressedKeys.has("ArrowRight")) {
                 targetX += speed;
                 updateSprite("walkRL.png", false);
-            } else if (direction === "up") {
+            }
+            if (pressedKeys.has("w") || pressedKeys.has("ArrowUp")) {
                 targetY -= speed;
                 updateSprite("walkBack.png");
-            } else if (direction === "down") {
+            }
+            if (pressedKeys.has("s") || pressedKeys.has("ArrowDown")) {
                 targetY += speed;
                 updateSprite("walkForward.png");
             }
@@ -249,21 +254,11 @@ search_exclude: true
 
             if (spriteMap[event.key]) {
                 event.preventDefault();
+                pressedKeys.add(event.key);
                 if (!spriteBox.classList.contains("walking")) {
                     spriteBox.classList.add("walking"); 
                 }
-        
-                if (event.key === "a" || event.key === "ArrowLeft") {
-                    moveCamera("left");
-                    isFlipped = true;
-                } else if (event.key === "d" || event.key === "ArrowRight") {
-                    moveCamera("right");
-                    isFlipped = false;
-                } else if (event.key === "w" || event.key === "ArrowUp") {
-                    moveCamera("up");
-                } else if (event.key === "s" || event.key === "ArrowDown") {
-                    moveCamera("down");
-                }
+                moveCamera();
             } else if (event.key === " " && closestPedestal && closestPedestal.distance <= 100) {
                 showDialog();
             }
@@ -271,8 +266,13 @@ search_exclude: true
 
         document.addEventListener("keyup", (event) => {
             if (spriteMap[event.key]) {
-                spriteBox.classList.remove("walking");
-                updateSprite(spriteMap[event.key], isFlipped);
+                pressedKeys.delete(event.key);
+                if (pressedKeys.size === 0) {
+                    spriteBox.classList.remove("walking");
+                    updateSprite(spriteMap[event.key], isFlipped);
+                } else {
+                    moveCamera();
+                }
             }
         });              
 
