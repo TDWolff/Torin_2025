@@ -266,16 +266,19 @@ search_exclude: true
             } else {
                 dialogBox.innerHTML = `You are interacting with: ${closestPedestalName}`;
             }
+            
+            // Calculate dialog position relative to the viewport
             let dialogX = (positionX + spriteBox.clientWidth / 2 - dialogBox.clientWidth / 2) - 200;
             let dialogY = (positionY + spriteBox.clientHeight / 2 - dialogBox.clientHeight / 2) - 100;
-
+        
             // Ensure the dialog box is within the viewport
             dialogX = Math.max(0, Math.min(dialogX, window.innerWidth - dialogBox.clientWidth));
             dialogY = Math.max(0, Math.min(dialogY, window.innerHeight - dialogBox.clientHeight));
-
+        
             dialogBox.style.left = `${dialogX}px`;
             dialogBox.style.top = `${dialogY}px`;
             dialogBox.style.display = 'block';
+            dialogBox.style.zIndex = '100'; // Bring dialog box to the front
             dialogOpen = true;
         }
 
