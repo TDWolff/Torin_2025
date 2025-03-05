@@ -251,7 +251,7 @@ search_exclude: true
                 ctx.beginPath();
                 ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
                 ctx.lineTo(closestPedestal.x, closestPedestal.y);
-                ctx.strokeStyle = closestPedestal.distance <= 100 ? 'green' : 'red';
+                ctx.strokeStyle = closestPedestal.distance <= 300 ? 'green' : 'red';
                 ctx.stroke();
                 ctx.lineWidth = 5;
                 closestPedestalName = closestPedestal.name;
@@ -303,7 +303,7 @@ search_exclude: true
                     spriteBox.classList.add("walking"); 
                 }
                 moveCamera();
-            } else if (event.key === " " && closestPedestal && closestPedestal.distance <= 100) {
+            } else if (event.key === " " && closestPedestal && closestPedestal.distance <= 300) {
                 showDialog();
             }
         });        
