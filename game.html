@@ -245,12 +245,6 @@ search_exclude: true
                     closestDistance = distance;
                     closestPedestal = { x: pedestalX, y: pedestalY, distance: distance, name: pedestal.className };
                 }
-
-                ctx.beginPath();
-                ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
-                ctx.lineTo(pedestalX, pedestalY);
-                ctx.strokeStyle = 'white';
-                ctx.stroke();
             });
 
             if (closestPedestal) {
