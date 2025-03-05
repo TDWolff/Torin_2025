@@ -237,6 +237,8 @@ search_exclude: true
                 ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
                 ctx.lineTo(closestPedestal.x, closestPedestal.y);
                 ctx.strokeStyle = closestPedestal.distance <= 200 ? 'green' : 'red';
+                // increase stroke width
+                ctx.lineWidth = 5;
                 ctx.stroke();
                 closestPedestalName = closestPedestal.name;
             }
