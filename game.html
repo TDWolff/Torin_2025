@@ -53,7 +53,7 @@ search_exclude: true
             animation: walkAnimation 0.2s steps(2) infinite;
         }      
 
-        .fruitPed, .culturePed, .artPed, .equalityPed, .volleyballPed, .heartPed .bookPed{
+        .fruitPed, .culturePed, .artPed, .equalityPed, .volleyballPed, .heartPed, .bookPed{
             width: 80px;
             height: 80px;
             image-rendering: pixelated;
@@ -91,7 +91,7 @@ search_exclude: true
         <div class="artPed" style="left: 800px; top: 50px;"></div>
         <div class="heartPed" style="left: 950px; top: 50px;"></div>
         <div class="volleyballPed" style="left: 1100px; top: 50px;"></div>
-        <div class="bookPed" style="left: 725; top: 250px;"></div>
+        <div class="bookPed" style="left: 725px; top: 250px;"></div>
         <div id="sprite-box"></div>
         <div id="dialog-box">This is a dialog box. Press any key to close.</div>
     </div>
@@ -189,7 +189,7 @@ search_exclude: true
 
         function drawLines() {
             ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
-            const pedestals = document.querySelectorAll('.fruitPed, .culturePed, .artPed, .equalityPed, .volleyballPed, .heartPed');
+            const pedestals = document.querySelectorAll('.fruitPed, .culturePed, .artPed, .equalityPed, .volleyballPed, .heartPed, .bookPed');
             closestPedestal = null; // Reset closestPedestal
             let closestDistance = Infinity;
 
