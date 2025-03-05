@@ -225,18 +225,18 @@ search_exclude: true
                     closestPedestal = { x: pedestalX, y: pedestalY, distance: distance, name: pedestal.className };
                 }
     
-                ctx.beginPath();
-                ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
-                ctx.lineTo(pedestalX, pedestalY);
-                ctx.strokeStyle = 'white';
-                ctx.stroke();
+                // ctx.beginPath();
+                // ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
+                // ctx.lineTo(pedestalX, pedestalY);
+                // ctx.strokeStyle = 'white';
+                // ctx.stroke();
             });
     
             if (closestPedestal) {
                 ctx.beginPath();
                 ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
                 ctx.lineTo(closestPedestal.x, closestPedestal.y);
-                ctx.strokeStyle = closestPedestal.distance <= 100 ? 'green' : 'red';
+                ctx.strokeStyle = closestPedestal.distance <= 200 ? 'green' : 'red';
                 ctx.stroke();
                 closestPedestalName = closestPedestal.name;
             }
