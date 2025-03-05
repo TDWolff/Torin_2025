@@ -259,6 +259,7 @@ search_exclude: true
                 ctx.lineTo(closestPedestal.x, closestPedestal.y);
                 ctx.strokeStyle = closestPedestal.distance <= 100 ? 'green' : 'red';
                 ctx.stroke();
+                ctx.witdth = 5;
                 closestPedestalName = closestPedestal.name;
             }
         }
