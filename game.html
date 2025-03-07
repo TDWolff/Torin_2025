@@ -325,7 +325,7 @@ search_exclude: true
                 if (!spriteBox.classList.contains("walking")) {
                     spriteBox.classList.add("walking"); 
                 }
-            } else if (event.key === " " && closestPedestal && closestPedestal.distance <= 200) {
+            } else if ((event.key === " " || event.key === "e" || event.key === "q") && closestPedestal && closestPedestal.distance <= 200) {
                 showDialog();
             }
         });        
