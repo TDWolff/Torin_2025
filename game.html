@@ -114,6 +114,8 @@ search_exclude: true
             <p>When you approach a pedestal and the <b>line turns green, press the spacebar to interact with it.</b></p>
             <p></p>
             <p>Press any key to start the game.</p>
+            <!-- small text -->
+             <p>Note: If the WASD doesn't work, just try pressing it again, the movement isnt perfect.</p>
         </div>
     </div>
 
@@ -128,7 +130,7 @@ search_exclude: true
         const ctx = gameCanvas.getContext("2d");
         const dialogBox = document.getElementById("dialog-box");
         const initialDialog = document.getElementById("initial-dialog");
-
+        
         const speed = 10; // Increased speed for faster motion
         const diagonalSpeed = speed / Math.sqrt(2); // Adjusted speed for diagonal movement
         const spriteMap = {
@@ -141,7 +143,7 @@ search_exclude: true
             "ArrowDown": "standForward.png",
             "ArrowRight": "standRL.png"
         };
-
+        
         const walkSpriteMap = {
             "w": "walkBack.png",
             "a": "walkRL.png",
@@ -152,33 +154,33 @@ search_exclude: true
             "ArrowDown": "walkForward.png",
             "ArrowRight": "walkRL.png"
         };
-
+        
         const pressedKeys = new Set();
-
+        
         // Center the sprite in the game container
         const centerX = gameContainer.clientWidth / 2 - spriteBox.clientWidth / 2;
         const centerY = gameContainer.clientHeight / 2 - spriteBox.clientHeight / 2;
         spriteBox.style.left = `${centerX}px`;
         spriteBox.style.top = `${centerY}px`;
-
+        
         let positionX = centerX;
         let positionY = centerY;
         let targetX = centerX;
         let targetY = centerY;
-
+        
         const mapWidth = 2224; // Example map width
         const mapHeight = 2000; // Example map height
-
+        
         function updateSprite(sprite, flip = isFlipped) {
             spriteBox.style.backgroundImage = `url('sprites/${sprite}')`;
             spriteBox.style.transform = flip ? "scaleX(-1)" : "scaleX(1)";
             isFlipped = flip; // Store the current flip state
         }        
-
+        
         function moveCamera() {
             let moveX = 0;
             let moveY = 0;
-
+        
             if (pressedKeys.has("a") || pressedKeys.has("ArrowLeft")) {
                 moveX -= 1;
                 updateSprite("walkRL.png", true);
@@ -195,7 +197,7 @@ search_exclude: true
                 moveY += 1;
                 updateSprite("walkForward.png");
             }
-
+        
             // Adjust speed for diagonal movement
             if (moveX !== 0 && moveY !== 0) {
                 moveX *= diagonalSpeed;
@@ -204,50 +206,55 @@ search_exclude: true
                 moveX *= speed;
                 moveY *= speed;
             }
-
+        
             targetX += moveX;
             targetY += moveY;
-
+        
             // Ensure the player stays within the map bounds
             const halfSpriteWidth = spriteBox.clientWidth / 2;
             const halfSpriteHeight = spriteBox.clientHeight / 2;
-
+        
             const minX = 0;
             const maxX = 1300; // Adjusted for fixed width
             const minY = 0;
             const maxY = 720; // Adjusted for fixed height
-
+        
             targetX = Math.max(minX, Math.min(targetX, maxX));
             targetY = Math.max(minY, Math.min(targetY, maxY));
-
+        
             positionX = targetX;
             positionY = targetY;
-
+        
             gameContainer.style.transform = `translate(${-positionX + centerX}px, ${-positionY + centerY}px)`;
             spriteBox.style.left = `${positionX}px`;
             spriteBox.style.top = `${positionY}px`;
-
+        
             drawLines();
         }
-
+        
+        function update() {
+            moveCamera();
+            requestAnimationFrame(update);
+        }
+        
         function drawLines() {
             ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
             const pedestals = document.querySelectorAll('.fruitPed, .culturePed, .artPed, .equalityPed, .volleyballPed, .heartPed, .bookPed');
             closestPedestal = null; // Reset closestPedestal
             let closestDistance = Infinity;
-
+        
             pedestals.forEach(pedestal => {
                 const rect = pedestal.getBoundingClientRect();
                 const pedestalX = rect.left + rect.width / 2 - gameContainer.getBoundingClientRect().left;
                 const pedestalY = rect.top + rect.height / 2 - gameContainer.getBoundingClientRect().top;
                 const distance = Math.hypot(pedestalX - (positionX + spriteBox.clientWidth / 2), pedestalY - (positionY + spriteBox.clientHeight / 2));
-
+        
                 if (distance < closestDistance) {
                     closestDistance = distance;
                     closestPedestal = { x: pedestalX, y: pedestalY, distance: distance, name: pedestal.className };
                 }
             });
-
+        
             if (closestPedestal) {
                 ctx.beginPath();
                 ctx.moveTo(positionX + spriteBox.clientWidth / 2, positionY + spriteBox.clientHeight / 2);
@@ -258,7 +265,7 @@ search_exclude: true
                 closestPedestalName = closestPedestal.name;
             }
         }
-
+        
         function showDialog() {
             if (closestPedestalName.includes('bookPed')) {
                 dialogBox.innerHTML = `<img src="sprites/bookPedArt.png" alt="Book Image" style="width: 100%; height: 100%;">`;
@@ -292,55 +299,52 @@ search_exclude: true
             dialogBox.style.zIndex = '100'; // Bring dialog box to the front
             dialogOpen = true;
         }
-
+        
         document.addEventListener("keydown", function () {
             const initialDialog = document.getElementById("initial-dialog");
             if (initialDialog.style.display !== "none") {
                 initialDialog.style.display = "none";
             }
         });        
-
+        
         document.addEventListener("keydown", (event) => {
             if (initialDialog.style.display === 'block') {
                 initialDialog.style.display = 'none';
                 return;
             }
-
+        
             if (dialogOpen) {
                 dialogBox.style.display = 'none';
                 dialogOpen = false;
                 return;
             }
-
+        
             if (spriteMap[event.key]) {
                 event.preventDefault();
                 pressedKeys.add(event.key);
                 if (!spriteBox.classList.contains("walking")) {
                     spriteBox.classList.add("walking"); 
                 }
-                moveCamera();
             } else if (event.key === " " && closestPedestal && closestPedestal.distance <= 200) {
                 showDialog();
             }
         });        
-
+        
         document.addEventListener("keyup", (event) => {
             if (spriteMap[event.key]) {
                 pressedKeys.delete(event.key);
                 if (pressedKeys.size === 0) {
                     spriteBox.classList.remove("walking");
                     updateSprite(spriteMap[event.key], isFlipped);
-                } else {
-                    moveCamera();
                 }
             }
         });              
-
+        
         // Preload images
         function preloadImages(imageUrls, callback) {
             let loadedImages = 0;
             const totalImages = imageUrls.length;
-
+        
             imageUrls.forEach(url => {
                 const img = new Image();
                 img.src = url;
@@ -352,7 +356,7 @@ search_exclude: true
                 };
             });
         }
-
+        
         const imageUrls = [
             'sprites/bookPedArt.png',
             'sprites/volleyballPedArt.png',
@@ -375,12 +379,13 @@ search_exclude: true
             'sprites/walkRL.png',
             'sprites/walkForward.png'
         ];
-
+        
         preloadImages(imageUrls, () => {
             // Initialize the game after images are preloaded
             updateSprite("standForward.png");
             gameCanvas.width = gameContainer.clientWidth;
             gameCanvas.height = gameContainer.clientHeight;
+            requestAnimationFrame(update);
         });
     </script>     
 </body>
